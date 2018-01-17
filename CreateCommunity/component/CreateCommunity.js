@@ -12,7 +12,7 @@ import { getStyles } from '../style/style.js'
     * Login Component
     *
   */
-class Login extends Component {
+class CreateCommunity extends Component {
   /**
     *Validation for props (Static propTypes)
     * @static
@@ -136,4 +136,4 @@ class Login extends Component {
       </div>)
   }
 }
-export default Login
+export default CreateCommunity

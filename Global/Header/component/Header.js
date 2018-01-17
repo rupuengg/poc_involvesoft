@@ -8,15 +8,31 @@ import { styles } from '../style/Header.js'
  *
  */
 export default class Header extends Component {
+  /**
+    *Validation for props (Static propTypes)
+    * @static
+    * @type {object} validators
+      {
+        PropTypes children object,
+        PropTypes title string,
+      }
+  */
   static propTypes = {
     children: PropTypes.object,
     title:PropTypes.string
   }
-
+  /**
+    * creates a instance of Login.
+    * @param {object} props
+  */
   constructor (props) {
     super(props)
   }
-
+  /**
+    * React lifecycle method :
+    * Renders this component
+    * @returns {ReactElement} - wrapped in div
+  */
   render () {
     return (
       <div>

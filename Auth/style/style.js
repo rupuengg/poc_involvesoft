@@ -1,3 +1,6 @@
+  /**
+ * function for styles of Login
+*/
 export function getStyles (props, muiTheme) {
   return {
     container: {

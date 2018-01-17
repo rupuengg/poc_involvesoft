@@ -6,28 +6,47 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import InvolvesoftTheme from '../theme.js'
 import Header from '../Global/Header/component/Header.js'
-import NavPanelContainer from '../Global/NavPanel/container/NavPanelContainer'
+import { grey300 } from 'material-ui/styles/colors'
 // import Login from '../Auth/component/Login.js'
 
 const muiTheme = getMuiTheme(InvolvesoftTheme)
+  /**
+    * Login Component
+    *
+  */
 
 export default class App extends Component {
+  /**
+    *Validation for props (Static propTypes)
+    * @static
+    * @type {object} validators
+      {
+        PropTypes routes object,
+        PropTypes store object,
+      }
+  */
   static propTypes = {
     routes: PropTypes.object.isRequired,
     store: PropTypes.object.isRequired
   }
-
+  /**
+    * default prop values.
+  */
   static defaultProps = {
     store: {}
   }
+  /**
+    * React lifecycle method :
+    * Renders this component
+    * @returns {ReactElement} - wrapped in Provider
+  */
   render () {
     const { routes, store } = this.props
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
-          <div>
+          <div style={{ backgroundColor:grey300 }}>
             <Header title='Involvesoft' />
-            <NavPanelContainer />
             <Router history={browserHistory} children={routes} />
           </div>
         </MuiThemeProvider>
