@@ -1,5 +1,6 @@
 import { cyan500, blue500, lightBlue700, lightBlue800, lightBlue900, grey300, yellowA700, red900,
 white, darkBlack, fullBlack, green400, grey100, orange900, lightGreen500, deepOrange300 } from 'material-ui/styles/colors'
+
 import { fade } from 'material-ui/utils/colorManipulator'
 // palette has to be updated with more colors
 const secondaryColor = '#808080'

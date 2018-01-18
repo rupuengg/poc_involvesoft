@@ -16,8 +16,16 @@ import {
 const mapStateToProps = (state, ownProps) => ({
   auth: state.authentication
 })
-
+ /**
+    * AuthContainer Component
+    *
+  */
 export class AuthContainer extends Component {
+ /**
+    * React lifecycle method :
+    * Renders this component
+    * @returns {ReactElement} - wrapped in div
+  */
   render () {
     return (<Login onLogin={this.props.login} />)
   }

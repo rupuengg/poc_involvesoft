@@ -7,7 +7,7 @@ export function getStyles (props, muiTheme) {
       padding: 30,
       paddingBottom: 10,
       paddingTop: 10,
-      width: 400,
+      width: 700,
       backgroundColor: muiTheme.palette.canvasColor
     },
     loginTopWrapper: {
@@ -22,7 +22,8 @@ export function getStyles (props, muiTheme) {
     },
     headerHeadline: {
       margin: 0,
-      fontWeight: 'normal'
+      fontWeight: 'normal',
+      textAlign: 'center'
     },
     headerText: {
       display: 'block',
@@ -39,8 +40,8 @@ export function getStyles (props, muiTheme) {
       fontSize: 14,
       lineHeight: '21px'
     },
-    rememberMeStyle: {
-      fontSize: 14
+    accountCreateTopWrapper: {
+      padding: '10px 30px'
     },
     actionWrapper: {
       textAlign: 'center',
@@ -52,8 +53,7 @@ export function getStyles (props, muiTheme) {
     passwordErrorText: {
       marginTop: 5,
       marginBottom: 20,
-      color:muiTheme.textField.errorColor,
-      textAlign:'left'
+      color:muiTheme.textField.errorColor
     },
     passwordErrorIcon: {
       float: 'right',
@@ -64,15 +64,17 @@ export function getStyles (props, muiTheme) {
       backgroundColor: muiTheme.raisedButton.backgroundColor
     },
     paperStyle: {
-      height: 400,
-      width: 500,
-      margin: 700,
-      textAlign: 'center',
+      height: 500,
+      width: 800,
+      margin: 500,
       display: 'inline-block',
       marginTop:'5%'
     },
     primaryStyle: {
       backgroundColor: muiTheme.palette.primaryColor
+    },
+    radioButton: {
+      wordWrap:'none'
     }
   }
 }
