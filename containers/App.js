@@ -26,8 +26,6 @@ export default class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div>
-            <Header title='Involvesoft' />
-            <NavPanelContainer />
             <Router history={browserHistory} children={routes} />
           </div>
         </MuiThemeProvider>

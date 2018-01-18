@@ -6,8 +6,6 @@ import RaisedButton from 'material-ui/RaisedButton'
 import theme from '../../theme'
 import { getStyles } from '../style/style.js'
 
-
-
 export default class Login extends Component {
   static propTypes = {
     styles: PropTypes.object,

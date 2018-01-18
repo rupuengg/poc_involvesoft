@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
-import FlatButton from 'material-ui/FlatButton'
+import { List, ListItem } from 'material-ui/List'
 import { Link } from 'react-router'
 import theme from '../../../theme'
 import { getStyles } from '../style/style.js'
@@ -10,29 +10,45 @@ export default class NavPanelContent extends Component {
   static propTypes = {
     styles: PropTypes.object,
     label: PropTypes.string,
-    activeId: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.number,
+    activeId: PropTypes.number,
     childContent: PropTypes.array,
-    route: PropTypes.string
+    route: PropTypes.string,
+    onClick: PropTypes.func
   }
   static defaultProps = {
     primaryHeader: 'LOGIN',
     childContent: []
   }
+  constructor (props) {
+    super(props)
+    this.handleCellSelection = this.handleCellSelection.bind(this)
+  }
+  handleCellSelection (e) {
+    this.props.onClick(this.props.id)
+  }
 
   render () {
     const styles = getStyles(this.props, theme)
-    const style = {}
     return (<div>
-      <Paper style={style} zDepth={2} >
-        <FlatButton label={this.props.label}
-          containerElement={<Link to={this.props.route} style={styles.link} activeStyle={styles.activeLink} />} />
-        {(this.props.activeId === this.props.id) && this.props.childContent.length && <div>
-            {this.props.childContent.map(child => {
-              <FlatButton label={child.label}
+      <br />
+      <Paper
+        style={(this.props.activeId === this.props.id) ? styles.activePaperStyle : styles.inActivePaperStyle}
+        zDepth={2} >
+        <List>
+          <ListItem primaryText={this.props.label}
+            onClick={this.handleCellSelection}
+            initiallyOpen
+            style={(this.props.activeId === this.props.id) ? styles.activeLabelStyle : styles.inActiveLabelStyle}
+            containerElement={<Link to={this.props.route} activeStyle={styles.activeLink} />}
+            nestedItems={(this.props.activeId === this.props.id) ? this.props.childContent.map(child =>
+              <ListItem key={child.label}
+                primaryText={child.label} style={styles.subMenuItemStyle}
+                initiallyOpen
                 containerElement={<Link to={child.route} style={styles.link} activeStyle={styles.activeLink} />} />
-            })}
-          </div>}
+              ) : []
+          } />
+        </List>
       </Paper>
     </div>)
   }
