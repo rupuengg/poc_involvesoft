@@ -47,13 +47,19 @@ function checkResponseStatus (response) {
 }
 
 // UPDATE for including query parameters for all http verbs
-export function request (method, url, params, headers, queryString) {
+export function request (method, url, params, headers, formData, queryString) {
+  console.log(headers)
   const options = {
     method: method,
-    headers: Object.assign({
-      'Accept': 'application/json'
-    }, headers)
+    headers: Object.assign({},{
+      //'content-type': 'multipart/form-data'
+      'Content-Type':'application/x-www-form-urlencoded'
+    }, headers),
+    credentails:'include'
+
   }
+
+  console.log(options)
 
   const paramsRequests = ['delete', 'update', 'post', 'put']
 
@@ -62,11 +68,10 @@ export function request (method, url, params, headers, queryString) {
   }
 
   if (paramsRequests.includes(method.toLowerCase())) {
-    options.headers['Content-Type'] = (typeof params === 'object' ? 'application/json' : 'text/plain')
     if (queryString) {
       url = `${url}?${serialize(params)}`
     } else {
-      options.body = (typeof params === 'object') ? JSON.stringify(params) : params
+      options.body = (typeof params === 'object') && formData ? serialize(params) : JSON.stringify(params)
     }
   } else if (params) {
     url = `${url}?${serialize(params)}`
@@ -78,10 +83,10 @@ export function request (method, url, params, headers, queryString) {
 
 export const encodeParams = (params) => serialize(params)
 
-export const del = (url, params, headers, queryString) => request('delete', url, params, headers, queryString)
+export const del = (url, params, headers, formData, queryString) => request('delete', url, params, headers, formData, queryString)
 
-export const put = (url, params, headers, queryString) => request('put', url, params, headers, queryString)
+export const put = (url, params, headers, formData, queryString) => request('put', url, params, headers, formData, queryString)
 
-export const post = (url, params, headers, queryString) => request('post', url, params, headers, queryString)
-
-export const get = (url, params, headers, queryString) => request('get', url, params, headers, queryString)
+export const post = (url, params, headers, formData, queryString) => request('post', url, params, headers, formData, queryString)
+ 
+export const get = (url, params, headers, formData, queryString) => request('get', url, params, headers, formData, queryString)

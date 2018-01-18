@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import Paper from 'material-ui/Paper'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import theme from '../../theme'
 import { getStyles } from '../style/style.js'
 
@@ -31,7 +32,7 @@ class CreateCommunity extends Component {
     * default prop values.
   */
   static defaultProps = {
-    primaryHeader: 'LOGIN'
+    primaryHeader: 'Create Community'
 
   }
   /**
@@ -42,8 +43,8 @@ class CreateCommunity extends Component {
     super(props, context)
 
     this.state = {
-      userId: '',
-      password: ''
+      name: '',
+      community: ''
     }
   }
   /**
@@ -51,39 +52,31 @@ class CreateCommunity extends Component {
   */
   _handleEnterKey = (e) => {
     if (e.key === 'Enter' && this._checkSignInEnabled()) {
-      this._login()
+      this._create()
     }
   }
   /**
     *Checking SignIn enabled
   */
   _checkSignInEnabled () {
-    const { userId, password } = this.state
+    const { name } = this.state
     // const { auth } = this.props
-    return userId.length && password.length// && auth.status !== LOGGING_IN_STATUS
+    return name.length // && auth.status !== LOGGING_IN_STATUS
   }
 
   /**
     *Setting Username value
   */
-  _setUsername = (e) => {
+  _setName = (e) => {
     this.setState({
-      userId: e.target.value.trim()
+      name: e.target.value.trim()
     })
   }
 
   /**
-    *Setting Password value
-  */
-  _setPassword = (e) => {
-    this.setState({
-      password: e.target.value
-    })
-  }
-  /**
     *Authenticating user through API
   */
-  _login = () => {
+  _create = () => {
     const { userId, password } = this.state
     console.log(userId, password)
     // this.props.login(userId.toLowerCase(), password, getAuthenticationURL())
@@ -96,7 +89,7 @@ class CreateCommunity extends Component {
   render () {
     const styles = getStyles(this.props, theme)
     const { primaryHeader } = this.props
-    const { userId, password } = this.state
+    const { name, community } = this.state
     const containerStyle = {
       ...styles.container,
       ...this.props.styles
@@ -105,29 +98,38 @@ class CreateCommunity extends Component {
       <div>
         <Paper style={styles.paperStyle} zDepth={3} rounded={false}>
           <div style={containerStyle}>
-            <div style={styles.loginTopWrapper} onKeyPress={this._handleEnterKey}>
+            <div style={styles.accountCreateTopWrapper} onKeyPress={this._handleEnterKey}>
               <div style={styles.header}>
                 <h2 style={styles.headerHeadline}>{primaryHeader}</h2>
               </div>
               <TextField
                 style={styles.textField}
-                floatingLabelText='Username'
-                value={userId}
-                onChange={this._setUsername}
+                floatingLabelText='Name'
+                value={name}
+                onChange={this._setName}
               />
               <br /><br />
-              <TextField
-                style={styles.textField}
-                floatingLabelText='Password'
-                value={password}
-                onChange={this._setPassword}
-                type='password'
-              />
+              <h4 style={{ align:'left' }}>{'This community is'}</h4>
+              <RadioButtonGroup ref='community' name='community'
+                defaultSelected='Public' onChange={this._onChange} iconStyle={{ fill:'white' }}>
+                <RadioButton
+                  name='choice_1'
+                  value='Public'
+                  label='Public - Everyone is included and view this community'
+                  style={styles.radioButton}
+                    />
+                <RadioButton
+                  name='choice_2'
+                  value='Private'
+                  label='Private - Only you and those included in this community can view this community'
+                  style={styles.radioButton}
+                   />
+              </RadioButtonGroup>
               <br />< br /><br />
               <RaisedButton backgroundColor={styles.raisedButton.backgroundColor}
-                label='Log In'
+                label='Create'
                 disabled={!this._checkSignInEnabled()}
-                onClick={this._login}
+                onClick={this._create}
                 disabledBackgroundColor={styles.raisedButton.disabledBackgroundColor}
               />
             </div>

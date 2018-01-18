@@ -1,4 +1,5 @@
 import { Record } from 'immutable'
+import { post } from '../../utils/httpRequest'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -25,9 +26,9 @@ const WRONG_CREDS = 'auth/WRONG_CREDS'
 // Action creators
 // ------------------------------------
 
-/* const loggingIn = () => ({
+const loggingIn = () => ({
   type: LOGGING_IN
-}) */
+})
 
 const loggedIn = () => ({
   type: LOGGED_IN
@@ -37,43 +38,43 @@ export const loggedOut = () => ({
   type: LOGGED_OUT
 })
 
-/*const error = () => ({
+const error = () => ({
   type: LOGIN_GENERIC_ERROR
 })
 
 const wrongCreds = () => ({
   type: WRONG_CREDS
-})*/
+})
 
 const initialStatus = () => ({
   type: LOGIN_INITIAL
 })
 
 const login = (username, password, baseUrl) => {
+  var form = {
+  "username": username,
+  "password": password
+}
+
+  console.log(form)
   return (dispatch) => {
     dispatch(loggedIn())
-    /* dispatch(loggingIn())
-    const url = baseUrl ? `${baseUrl}/oauth/token` : `/oauth/token`
-    post(url, {
-      username,
-      password,
-      grant_type:'password',
-      client_id:'clientapp',
-      client_secret : '123456'
-    }, { 'Authorization':'Basic Y2xpZW50YXBwOjEyMzQ1Ng==' }, true)
-      .then(response => (response.json()))
+    dispatch(loggingIn())
+    const url = 'http://10.0.30.179:8888/index.php/login'
+    post(url,form,{},true)
+    .then(response => (response.json()))
       .then(payload => {
         dispatch(loggedIn())
       }, (payload, status) => {
-        payload && payload.error === 'invalid_grant'
+        console.log(payload, status)
+        payload && payload.result.error === 'Invalid credentials'
         ? dispatch(wrongCreds())
         : dispatch(error())
       })
       .catch(err => {
-        dispatch(removeLoader())
         dispatch(error())
         console.log(err)
-      }) */
+      })
   }
 }
 

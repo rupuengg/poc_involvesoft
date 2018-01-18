@@ -52,7 +52,8 @@ export function getStyles (props, muiTheme) {
     passwordErrorText: {
       marginTop: 5,
       marginBottom: 20,
-      color:muiTheme.textField.errorColor
+      color:muiTheme.textField.errorColor,
+      textAlign:'left'
     },
     passwordErrorIcon: {
       float: 'right',
