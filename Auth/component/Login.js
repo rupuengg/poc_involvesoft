@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import ErrorIcon from 'material-ui/svg-icons/action/report-problem'
 import theme from '../../theme'
 import { getStyles } from '../style/style.js'
+import { browserHistory } from 'react-router'
 
 import { getAuthenticationURL } from '../../utils/httpRequest'
 import { connect } from 'react-redux'
@@ -59,7 +60,7 @@ class Login extends Component {
   */
   static defaultProps = {
     primaryHeader: 'LOGIN',
-    onSuccess: () => {}
+    onSuccess: () => {browserHistory.replace('/logged-in')}
 
   }
   /**

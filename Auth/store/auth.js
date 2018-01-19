@@ -58,7 +58,6 @@ const login = (username, password, baseUrl) => {
 
   console.log(form)
   return (dispatch) => {
-    dispatch(loggedIn())
     dispatch(loggingIn())
     const url = 'http://10.0.30.179:8888/index.php/login'
     post(url,form,{},true)

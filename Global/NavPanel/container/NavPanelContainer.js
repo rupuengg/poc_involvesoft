@@ -4,20 +4,20 @@ import NavPanelContent from '../component/NavPanelContent'
 import NavTabs from '../component/NavTabs'
 import theme from '../../../theme'
 import { getStyles } from '../style/style.js'
+import { changeActiveId, PanelContent} from '../store/navPanelStore'
+import { connect } from 'react-redux'
 
-const PanelContent = [{ label:'Volunteer', route:'', childContent:[{ label:'a', route:'' }, { label:'b', route:'' }, { label:'c', route:'' }] },
-{ label:'Communities', route:'', childContent:[{ label:'All Communities', route:'/navpanel' }, { label:'My Communities', route:'' }, { label:'Create a Community', route:'' }] }]
+const mapStateToProps = (state, ownProps) => ({
+  nav: state.navigate
+})
 
-export default class NavPanelContainer extends Component {
+class NavPanelContainer extends Component {
   constructor (props) {
     super(props)
-    this.state = {
-      activeId:1
-    }
     this.cellSelection = this.cellSelection.bind(this)
   }
   cellSelection (index) {
-    this.setState({ activeId:index })
+    this.props.changeActiveId(index)
   }
   render () {
     const styles = getStyles(this.props, theme)
@@ -26,14 +26,18 @@ export default class NavPanelContainer extends Component {
         {PanelContent.map((content, contentIndex) =>
           <NavPanelContent label={content.label}
             onClick={this.cellSelection}
-            activeId={this.state.activeId}
+            activeId={this.props.nav.activeId}
             id={contentIndex}
             key={content.label + contentIndex}
             childContent={content.childContent}
             route={content.route} />
         )}
       </div>
-      <NavTabs activeContent={PanelContent[this.state.activeId]} />
+      <NavTabs activeContent={PanelContent[this.props.nav.activeId]} />
     </div>)
   }
   }
+
+  export default connect(mapStateToProps, {
+  changeActiveId })(NavPanelContainer)
+

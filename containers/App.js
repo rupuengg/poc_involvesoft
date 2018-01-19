@@ -10,10 +10,6 @@ import { grey300 } from 'material-ui/styles/colors'
  import CreateCommunity from '../CreateCommunity/component/CreateCommunity.js'
 
 const muiTheme = getMuiTheme(InvolvesoftTheme)
-  /**
-    * Login Component
-    *
-  */
 
 export default class App extends Component {
   /**
@@ -46,7 +42,6 @@ export default class App extends Component {
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
           <div style={{ backgroundColor:grey300 }}>
-            <Header title='Involvesoft' />
             <Router history={browserHistory} children={routes} />
           </div>
         </MuiThemeProvider>
