@@ -8,7 +8,27 @@ import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton'
 import theme from '../../theme'
 import { getStyles } from '../style/style.js'
 
-// import { getAuthenticationURL } from '../../utils/httpRequest'
+import { getAuthenticationURL } from '../../utils/httpRequest'
+import { connect } from 'react-redux'
+import {
+  createActions,
+  CREATED_IN_STATUS,
+  WRONG_CREDS_STATUS,
+  GENERIC_ERROR_STATUS
+} from '../store/createCommunity'
+import {
+  authActions,
+  LOGGED_IN_STATUS
+} from '../../Auth/store/auth'
+  /*
+  * @Function Mapping component state to props.
+  * @param {Object} state
+  * @returns {Object} containing props
+  */
+const mapStateToProps = (state, ownProps) => ({
+  comm: state.create
+})
+
   /**
     * Login Component
     *
@@ -44,7 +64,8 @@ class CreateCommunity extends Component {
 
     this.state = {
       name: '',
-      community: ''
+      community: 'pub',
+      user_id: ''
     }
   }
   /**
@@ -77,9 +98,21 @@ class CreateCommunity extends Component {
     *Authenticating user through API
   */
   _create = () => {
-    const { userId, password } = this.state
-    console.log(userId, password)
-    // this.props.login(userId.toLowerCase(), password, getAuthenticationURL())
+    const { name, community } = this.state
+    console.log(name, community)
+     this.props.createcommunity(name, community,'2', getAuthenticationURL())
+  }
+  _onChange = (e, selected) => {
+      console.log('selected',selected)
+      this.setState({
+        community: selected
+      })
+   
+  }
+  componentWillUpdate (nextProps) {
+    if (nextProps.comm.status === CREATED_IN_STATUS) {
+      console.log('community added')
+    }
   }
   /**
     * React lifecycle method :
@@ -95,7 +128,6 @@ class CreateCommunity extends Component {
       ...this.props.styles
     }
     return (
-      <div>
         <Paper style={styles.paperStyle} zDepth={3} rounded={false}>
           <div style={containerStyle}>
             <div style={styles.accountCreateTopWrapper} onKeyPress={this._handleEnterKey}>
@@ -109,20 +141,18 @@ class CreateCommunity extends Component {
                 onChange={this._setName}
               />
               <br /><br />
-              <h4 style={{ align:'left' }}>{'This community is'}</h4>
+              <h4 style={{ textAlign:'left' }}>{'This community is'}</h4>
               <RadioButtonGroup ref='community' name='community'
-                defaultSelected='Public' onChange={this._onChange} iconStyle={{ fill:'white' }}>
+                defaultSelected='pub' onChange={this._onChange} labelPostion='left'>
                 <RadioButton
                   name='choice_1'
-                  value='Public'
+                  value='pub'
                   label='Public - Everyone is included and view this community'
-                  style={styles.radioButton}
                     />
                 <RadioButton
                   name='choice_2'
-                  value='Private'
+                  value='priv'
                   label='Private - Only you and those included in this community can view this community'
-                  style={styles.radioButton}
                    />
               </RadioButtonGroup>
               <br />< br /><br />
@@ -134,8 +164,8 @@ class CreateCommunity extends Component {
               />
             </div>
           </div>
-        </Paper>
-      </div>)
+        </Paper>)
   }
 }
-export default CreateCommunity
+export default connect(mapStateToProps, {
+  ...createActions, ...authActions })(CreateCommunity)

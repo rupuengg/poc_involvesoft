@@ -32,7 +32,9 @@ export function getStyles (props, muiTheme) {
       color: (muiTheme.palette.textColor, 0.54)
     },
     textField: {
-      width: '100%'
+      width: '100%',
+      paddingLeft:10,
+      paddingRight:10
     },
     forgotPassword: {
       textAlign: 'right',
@@ -64,9 +66,8 @@ export function getStyles (props, muiTheme) {
       backgroundColor: muiTheme.raisedButton.backgroundColor
     },
     paperStyle: {
-      height: 400,
+      height: 350,
       width: 500,
-      margin: 700,
       textAlign: 'center',
       display: 'inline-block',
       marginTop:'5%'

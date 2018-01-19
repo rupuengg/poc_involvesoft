@@ -7,7 +7,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import InvolvesoftTheme from '../theme.js'
 import Header from '../Global/Header/component/Header.js'
 import { grey300 } from 'material-ui/styles/colors'
- import CreateCommunity from '../CreateCommunity/component/CreateCommunity.js'
+import CreateCommunity from '../CreateCommunity/component/CreateCommunity.js'
+ import MyCommunity from '../MyCommunity/component/MyCommunity.js'
 
 const muiTheme = getMuiTheme(InvolvesoftTheme)
   /**
@@ -45,8 +46,9 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider muiTheme={muiTheme}>
-          <div style={{ backgroundColor:grey300 }}>
-            <Header title='Involvesoft' />
+
+          <div style={{ backgroundColor:grey300, minHeight:'100vh', backgroundSize:'cover' }}>
+            <MyCommunity />
             <Router history={browserHistory} children={routes} />
           </div>
         </MuiThemeProvider>

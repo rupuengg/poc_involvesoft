@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
 import auth from './Auth/store/auth'
 import uistateReducer from './Layouts/store/uistate'
-
+import comm from './CreateCommunity/store/createCommunity'
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     authentication : auth,
     uistate: uistateReducer,
+    create: comm, 
     ...asyncReducers
   })
 }
