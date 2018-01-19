@@ -2,6 +2,8 @@ import Login from './Auth/component/Login'
 import CoreLayout from './Layouts/CoreLayout'
 import NavPanelContainer from './Global/NavPanel'
 import NavLayout from './Layouts/NavLayout/NavLayout.js'
+import CreateCommunity from './CreateCommunity/component/CreateCommunity'
+import CommunityView from './CommunityView/container/CommunityView'  
 
 export const createRoutes = (store) => ({
   path: '/',
@@ -16,7 +18,7 @@ export const createRoutes = (store) => ({
   },
   {
     path: '/communities',
-    component: Login,
+    component: CommunityView, 
     childRoutes: [{
       path: '/all-communities',
       component: Login
@@ -27,7 +29,7 @@ export const createRoutes = (store) => ({
     },
     {
       path: '/create-a-community',
-      component: Login
+      component: CreateCommunity
     }
     ]
   }] }]})

@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import NavPanelContent from '../component/NavPanelContent'
-import NavTabs from '../component/NavTabs'
 import theme from '../../../theme'
 import { getStyles } from '../style/style.js'
-import { changeActiveId, PanelContent} from '../store/navPanelStore'
+import { changeActiveId } from '../store/navPanelStore'
 import { connect } from 'react-redux'
 
 const mapStateToProps = (state, ownProps) => ({
@@ -23,7 +22,7 @@ class NavPanelContainer extends Component {
     const styles = getStyles(this.props, theme)
     return (<div>
       <div style={styles.navPanelStyle}>
-        {PanelContent.map((content, contentIndex) =>
+        {this.props.nav.panelContent.map((content, contentIndex) =>
           <NavPanelContent label={content.label}
             onClick={this.cellSelection}
             activeId={this.props.nav.activeId}
@@ -33,7 +32,7 @@ class NavPanelContainer extends Component {
             route={content.route} />
         )}
       </div>
-      <NavTabs activeContent={PanelContent[this.props.nav.activeId]} />
+
     </div>)
   }
   }

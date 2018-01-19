@@ -68,9 +68,7 @@ export function getStyles (props, muiTheme) {
     paperStyle: {
       height: 350,
       width: 500,
-      textAlign: 'center',
-      display: 'inline-block',
-      marginTop:'5%'
+      margin:'5% auto 0px auto'
     },
     primaryStyle: {
       backgroundColor: muiTheme.palette.primaryColor

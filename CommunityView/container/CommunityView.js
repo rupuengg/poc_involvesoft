@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { getStyles } from '../style/style.js'
+import theme from '../../theme'
 
 import NavTabs from '../../Global/NavTabs'
-import { PanelContent} from '../store/navPanelStore'
 
 const mapStateToProps = (state, ownProps) => ({
   nav: state.navigate
@@ -16,13 +17,13 @@ class CommunityView extends Component {
     }
 
 	render () {
-
+  const styles = getStyles(this.props, theme)
     return (
       <div >
-        <div style={styles.navTabsHeaderStyle}>
-        <h2>{this.props.activeContent.label}</h2>
+        <div style={styles.headerStyle}>
+        <h2>{this.props.nav.panelContent[this.props.nav.activeId].label}</h2>
         </div>
-        <NavTabs activeContent={PanelContent[this.props.nav.activeId]} />
+        <NavTabs activeContent={this.props.nav.panelContent[this.props.nav.activeId]} />
         {this.props.children}
       </div>
     )

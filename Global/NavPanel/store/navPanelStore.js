@@ -35,7 +35,8 @@ export const changeActiveId =(activeId) => {
 // ------------------------------------
 
 const Nav = new Record({
-  activeId:1
+  activeId:1,
+  panelContent: PanelContent
 })
 
 const initialState = new Nav()
