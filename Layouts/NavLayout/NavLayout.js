@@ -4,6 +4,10 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 import NavPanelContainer from '../../Global/NavPanel'
+import {
+  authActions,
+  LOGGED_IN_STATUS
+} from '../../Auth/store/auth'
 
 const mapStateToProps = (state) => {
   return {
@@ -20,14 +24,12 @@ class NavLayout extends Component {
   /**
     * React lifecycle method
   */
-  shouldComponentUpdate (nextProps) {
-    if(!nextProps.auth.loggedIn){
+ shouldComponentUpdate (nextProps) {
+     if(!nextProps.auth.loggedIn){
       browserHistory.replace('/')
-      console.log('navv')
        return false
-      } else {
-        return true
-    }
+      }
+      return true
   }
 
   static propTypes = {
@@ -46,5 +48,5 @@ class NavLayout extends Component {
 }
 
 export default connect(
-  mapStateToProps, {}
+  mapStateToProps, {...authActions}
 )(NavLayout)

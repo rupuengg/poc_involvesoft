@@ -49,6 +49,7 @@ export default class NavPanelContent extends Component {
               ) : []
           } />
         </List>
+        { console.log('ListItem',this.props.childContent)}
       </Paper>
     </div>)
   }

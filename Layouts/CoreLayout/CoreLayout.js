@@ -25,7 +25,6 @@ class CoreLayout extends Component {
   */
   
   static propTypes = {
-    children: PropTypes.object,
     navbarShown: PropTypes.bool.isRequired
   }
   render () {

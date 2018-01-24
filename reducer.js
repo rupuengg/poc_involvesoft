@@ -1,14 +1,20 @@
 import { combineReducers } from 'redux'
-import auth from './Auth/store/auth'
-import nav from './Global/NavPanel/store/navPanelStore'
-import uistateReducer from './Layouts/store/uistate'
-import comm from './CreateCommunity/store/createCommunity'
+import authentication from './Auth/store/auth'
+import navigate from './Global/NavPanel/store/navPanelStore'
+import uistate from './Layouts/store/uistate'
+import create from './CreateCommunity/store/createCommunity'
+import community from './MyCommunity/store/MyCommunity'
+import settings from './userSetting'
+import volunteers from './MapVolunteer/store/mapvolunteer'
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    authentication : auth,
-    uistate: uistateReducer,
-    navigate: nav,
-    create: comm, 
+    authentication,
+    uistate,
+    navigate,
+    create,
+    community,
+    settings, 
+    volunteers,
     ...asyncReducers
   })
 }

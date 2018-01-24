@@ -1,127 +1,90 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types'
+import theme from '../../theme'
+import { getStyles } from '../style/style.js'
+import MyCommunityDisplay from './MyCommunityDisplay.js'
+
+import { getAuthenticationURL } from '../../utils/httpRequest'
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+
+
 import {
-  Table,
-  TableBody,
-  TableFooter,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-import TextField from 'material-ui/TextField';
-import Toggle from 'material-ui/Toggle';
+  fetchActions,
+  FETCHED_IN_STATUS
+} from '../../MyCommunity/store/MyCommunity'
+import {
+  authActions,
+  LOGGED_IN_STATUS
+} from '../../Auth/store/auth'
+  /*
+  * @Function Mapping component state to props.
+  * @param {Object} state
+  * @returns {Object} containing props
+  */
+const mapStateToProps = (state, ownProps) => ({
+  auth: state.authentication,
+  community: state.community
+})
 
-const styles = {
-  propContainer: {
-    width: 200,
-    overflow: 'hidden',
-    margin: '20px auto 0',
-  },
-  propToggleHeader: {
-    margin: '20px auto 10px',
-  },
-};
 
-const tableData = [
-  {
-    name: 'John Smith',
-    status: 'Employed',
-  },
-  {
-    name: 'Randal White',
-    status: 'Unemployed',
-  },
-  {
-    name: 'Stephanie Sanders',
-    status: 'Employed',
-  },
-  {
-    name: 'Steve Brown',
-    status: 'Employed',
-  },
-  {
-    name: 'Joyce Whitten',
-    status: 'Employed',
-  },
-  {
-    name: 'Samuel Roberts',
-    status: 'Employed',
-  },
-  {
-    name: 'Adam Moore',
-    status: 'Employed',
-  },
-];
+class MyCommunity extends Component {
 
-/**
- * A more complex example, allowing the table height to be set, and key boolean properties to be toggled.
- */
-export default class MyCommunity extends Component {
-  state = {
-    fixedHeader: true,
-    fixedFooter: true,
-    stripedRows: false,
-    showRowHover: false,
-    selectable: true,
-    multiSelectable: false,
-    enableSelectAll: false,
-    deselectOnClickaway: true,
-    showCheckboxes: true,
-    height: '300px',
-  };
-
-  handleToggle = (event, toggled) => {
-    this.setState({
-      [event.target.name]: toggled,
-    });
-  };
-
-  handleChange = (event) => {
-    this.setState({height: event.target.value});
-  };
-
-  render() {
-    return (
-      <div>
-        <Table
-          height={this.state.height}
-          fixedHeader={this.state.fixedHeader}
-          fixedFooter={this.state.fixedFooter}
-          selectable={this.state.selectable}
-          multiSelectable={this.state.multiSelectable}
-        >
-          <TableHeader
-            displaySelectAll={this.state.showCheckboxes}
-            adjustForCheckbox={this.state.showCheckboxes}
-            enableSelectAll={this.state.enableSelectAll}
-          >
-            <TableRow>
-              <TableHeaderColumn colSpan="3" tooltip="Super Header" style={{textAlign: 'center'}}>
-                Super Header
-              </TableHeaderColumn>
-            </TableRow>
-            <TableRow>
-              <TableHeaderColumn tooltip="The ID">ID</TableHeaderColumn>
-              <TableHeaderColumn tooltip="The Name">Name</TableHeaderColumn>
-              <TableHeaderColumn tooltip="The Status">Status</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={this.state.showCheckboxes}
-            deselectOnClickaway={this.state.deselectOnClickaway}
-            showRowHover={this.state.showRowHover}
-            stripedRows={this.state.stripedRows}
-          >
-            {tableData.map( (row, index) => (
-              <TableRow key={index}>
-                <TableRowColumn>{index}</TableRowColumn>
-                <TableRowColumn>{row.name}</TableRowColumn>
-                <TableRowColumn>{row.status}</TableRowColumn>
-              </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
-    );
+  /**
+    * React lifecycle method
+  */
+  shouldComponentUpdate (nextProps) {
+     if(!nextProps.auth.loggedIn){
+      browserHistory.replace('/')
+      
+       return false
+      }
+      return true
   }
+
+  /**
+    * React lifecycle method
+  */
+
+  /**
+    * React lifecycle method
+  */
+  componentWillMount () {
+     if (this.props.auth.loggedIn) {
+      this.props.fetchAllCommunities(this.props.auth.user_id,getAuthenticationURL())
+    }
+  }
+   componentWillUpdate (nextProps) {
+    if (this.props.auth.loggedIn) {
+      console.log("MyCommunity....")
+      
+    }
+   }
+
+render() {
+return (
+  <div>
+
+   {this.props.community.payload && this.props.community.payload.status
+    && this.props.community.payload.result.map((community,index) => {
+      const childrenProps = {
+        id: community.community_id,
+        name: community.community_name,
+        creator: community.community_creator,
+        createdDate: community.community_created_date,
+        visibility: community.community_visibility
+       
+      }
+    
+   return <MyCommunityDisplay {...childrenProps} /> 
+     
+    })
+  }
+   
+   </div>
+
+)
 }
+}
+export default connect(mapStateToProps, {
+  ...fetchActions, ...authActions })(MyCommunity)

@@ -54,8 +54,8 @@ export function getStyles (props, muiTheme) {
       backgroundColor: muiTheme.raisedButton.backgroundColor
     },
     paperStyle: {
-      height: 370,
-      width: 800,
+      height: 200,
+      width: 1000,
       //marginTop:'5%',
       margin:'5% auto 0px auto'
     },

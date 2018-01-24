@@ -10,6 +10,7 @@ import { getStyles } from '../style/style.js'
 
 import { getAuthenticationURL } from '../../utils/httpRequest'
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 import {
   createActions,
   CREATED_IN_STATUS,
@@ -26,7 +27,8 @@ import {
   * @returns {Object} containing props
   */
 const mapStateToProps = (state, ownProps) => ({
-  comm: state.create
+  comm: state.create,
+  auth: state.authentication
 })
 
   /**
@@ -67,6 +69,7 @@ class CreateCommunity extends Component {
       community: 'pub',
       user_id: ''
     }
+    console.log('CreateCommunity')
   }
   /**
     *On click of Enter key
@@ -100,7 +103,7 @@ class CreateCommunity extends Component {
   _create = () => {
     const { name, community } = this.state
     console.log(name, community)
-     this.props.createcommunity(name, community,'2', getAuthenticationURL())
+     this.props.createcommunity(name, community,this.props.auth.user_id, getAuthenticationURL())
   }
   _onChange = (e, selected) => {
       console.log('selected',selected)
@@ -109,9 +112,26 @@ class CreateCommunity extends Component {
       })
    
   }
+  /**
+    * React lifecycle method
+  */
+  shouldComponentUpdate (nextProps) {
+    if(!nextProps.auth.loggedIn){
+      browserHistory.replace('/')
+      
+       return false
+      }
+      return true
+    
+  }
+  /**
+    * React lifecycle method
+  */
   componentWillUpdate (nextProps) {
     if (nextProps.comm.status === CREATED_IN_STATUS) {
-      console.log('community added')
+       console.log('community added')
+       browserHistory.replace('/my-communities')
+
     }
   }
   /**
@@ -156,12 +176,14 @@ class CreateCommunity extends Component {
                    />
               </RadioButtonGroup>
               <br />< br /><br />
+              <div style={{textAlign:'center'}}>
               <RaisedButton backgroundColor={styles.raisedButton.backgroundColor}
                 label='Create'
                 disabled={!this._checkSignInEnabled()}
                 onClick={this._create}
                 disabledBackgroundColor={styles.raisedButton.disabledBackgroundColor}
               />
+              </div>
             </div>
           </div>
         </Paper>)

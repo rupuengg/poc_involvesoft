@@ -1,40 +1,47 @@
 import { Record } from 'immutable'
 import { post } from '../../utils/httpRequest'
+import { getUserSettings } from '../../userSetting'
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const CREATE_READY_STATUS = 'CREATE_READY'
-export const FETCHED_IN_STATUS = 'FETCHED_IN'
-export const FETCHING_IN_STATUS = 'FETCHING_IN'
+export const LOGIN_READY_STATUS = 'LOGIN_READY'
+export const VOLUNTEERS_LOADED_STATUS = 'VOLUNTEERS_LOADED'
+export const LOGGED_OUT_STATUS = 'LOGGED_OUT'
+export const VOLUNTEERS_LOADING_STATUS = 'VOLUNTEERS_LOADING'
 export const GENERIC_ERROR_STATUS = 'GENERIC_ERROR'
-export const FETCH_INITIAL_STATUS = 'FETCH_INITIAL'
+export const LOGIN_INITIAL_STATUS = 'LOGIN_INITIAL'
 export const WRONG_CREDS_STATUS = 'WRONG_CREDS'
 
 // -----------------------------
 // actions
 // ------------------------------
 
-const FETCHING_IN = 'fetch/FETCHING_IN'
-const FETCHED_IN = 'fetch/FETCHED_IN'
-const FETCH_GENERIC_ERROR = 'fetch/GENERIC_ERROR'
-const FETCH_INITIAL = 'fetch/FETCH_INITIAL'
-const WRONG_CREDS = 'fetch/WRONG_CREDS'
+const VOLUNTEERS_LOADING = 'map/VOLUNTEERS_LOADING'
+const VOLUNTEERS_LOADED = 'map/VOLUNTEERS_LOADED'
+const LOGGED_OUT = 'auth/LOGGED_OUT'
+const LOGIN_GENERIC_ERROR = 'map/GENERIC_ERROR'
+const LOGIN_INITIAL = 'map/LOGIN_INITIAL'
+const WRONG_CREDS = 'map/WRONG_CREDS'
 
 // ------------------------------------
 // Action creators
 // ------------------------------------
 
-const fetchingIn = () => ({
-  type: FETCHING_IN
+const volunteersLoading = () => ({
+  type: VOLUNTEERS_LOADING
 })
 
-const fetchedIn = ( payload ) => ({
-  type: FETCHED_IN,
+const volunteersLoaded = (payload) => ({
+  type: VOLUNTEERS_LOADED,
   payload
 })
 
+export const loggedOut = () => ({
+  type: LOGGED_OUT
+})
+
 const error = () => ({
-  type: FETCH_GENERIC_ERROR
+  type: LOGIN_GENERIC_ERROR
 })
 
 const wrongCreds = () => ({
@@ -42,26 +49,25 @@ const wrongCreds = () => ({
 })
 
 const initialStatus = () => ({
-  type: FETCH_INITIAL
+  type: LOGIN_INITIAL
 })
 
-const fetchAllCommunities = (user_id, baseUrl) => {
+const fetchvolunteers = (user_id, baseUrl) => {
   var form = {
-
   "user_id": user_id
 }
 
   console.log(form)
   return (dispatch) => {
-    dispatch(fetchingIn())
-    const url = 'http://ec2-18-219-4-0.us-east-2.compute.amazonaws.com:8888/myCommunities'
+    dispatch(volunteersLoading())
+    const url = 'http://ec2-18-219-4-0.us-east-2.compute.amazonaws.com:8888/volunteers'
     post(url,form,{},true)
     .then(response => (response.json()))
       .then(payload => {
-         console.log('payload',payload)
-         dispatch(fetchedIn(payload))
+         console.log('PAYLOAD',payload)
+        dispatch(volunteersLoaded(payload))
       }, (payload, status) => {
-        payload && payload.result.error === 'false'
+        payload && payload.result.error === 'Invalid credentials'
         ? dispatch(wrongCreds())
         : dispatch(error())
       })
@@ -72,20 +78,19 @@ const fetchAllCommunities = (user_id, baseUrl) => {
   }
 }
 
+
 const clear = () => {
   return initialStatus()
 }
 
-export const fetchActions = {
-  fetchAllCommunities,
+export const fetchVolunteersActions = {
+  fetchvolunteers,
   clear
 }
 
 // ------------------------------------
 // Reducer
 // ------------------------------------
-
-
 const initialState = {
   fetchedIn : false,
   status: null,
@@ -93,12 +98,12 @@ const initialState = {
 }
 
 const actionHandlers = {
-  [FETCHING_IN]: (state) => Object.assign({},state,{'status':FETCHING_IN_STATUS}),
+  [VOLUNTEERS_LOADING]: (state) => Object.assign({},state,{'status':VOLUNTEERS_LOADING}),
 
-  [FETCHED_IN]: (state, { payload }) => {
+  [VOLUNTEERS_LOADED]: (state, { payload }) => {
     return Object.assign({},state,{
-      fetchedIn : true,
-      status: FETCHED_IN_STATUS,
+      volunteersLoaded : true,
+      status: VOLUNTEERS_LOADED,
       payload
     })
   }

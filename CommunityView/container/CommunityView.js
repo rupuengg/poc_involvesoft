@@ -15,11 +15,19 @@ class CommunityView extends Component {
 	static propTypes = {
     children: PropTypes.object
     }
-
+ /* shouldComponentUpdate (nextProps) {
+    if(!nextProps.auth.loggedIn){
+      browserHistory.replace('/')
+      
+       return false
+      }
+      return true
+    
+  }*/
 	render () {
   const styles = getStyles(this.props, theme)
     return (
-      <div >
+      <div style={{width:'80%', float:'left'}}>
         <div style={styles.headerStyle}>
         <h2>{this.props.nav.panelContent[this.props.nav.activeId].label}</h2>
         </div>

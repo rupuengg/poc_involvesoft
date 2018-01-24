@@ -1,5 +1,6 @@
 import { Record } from 'immutable'
 import { post } from '../../utils/httpRequest'
+import { getUserSettings } from '../../userSetting'
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -30,8 +31,11 @@ const loggingIn = () => ({
   type: LOGGING_IN
 })
 
-const loggedIn = () => ({
-  type: LOGGED_IN
+const loggedIn = (user_type,user_id,username) => ({
+  type: LOGGED_IN,
+  user_type,
+  user_id,
+  username
 })
 
 export const loggedOut = () => ({
@@ -59,13 +63,14 @@ const login = (username, password, baseUrl) => {
   console.log(form)
   return (dispatch) => {
     dispatch(loggingIn())
-    const url = 'http://10.0.30.179:8888/index.php/login'
+    const url = 'http://ec2-18-219-4-0.us-east-2.compute.amazonaws.com:8888/login'
     post(url,form,{},true)
     .then(response => (response.json()))
       .then(payload => {
-        dispatch(loggedIn())
+         console.log('PAYLOAD',payload.result.username)
+        dispatch(loggedIn(payload.result.user_type,payload.result.user_id,payload.result.username))
       }, (payload, status) => {
-        console.log(payload, status)
+       
         payload && payload.result.error === 'Invalid credentials'
         ? dispatch(wrongCreds())
         : dispatch(error())
@@ -111,23 +116,30 @@ export const authActions = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
+const settings = getUserSettings()
 
-const Auth = new Record({
+let Auth = new Record({
   loggedIn : false,
   status: null,
-  username : null
+  user_type:null,
+  user_id:null,
+  username:null
 })
-
+console.log(settings)
+Auth = Object.keys(settings.auth).length? new Record(settings.auth): Auth
 const initialState = new Auth()
 
 const actionHandlers = {
   [LOGGING_IN]: (state) => state.set('status', LOGGING_IN_STATUS),
 
-  [LOGGED_IN]: (state, { username }) => {
+  [LOGGED_IN]: (state, { user_type,user_id,username }) => {
     let nextState = state
+    console.log('state',state)
     nextState = state.merge({
       loggedIn : true,
       status: LOGGED_IN_STATUS,
+      user_type,
+      user_id,
       username
     })
     return nextState
@@ -145,7 +157,7 @@ const actionHandlers = {
 
   [LOGIN_GENERIC_ERROR]: (state) => state.set('status', GENERIC_ERROR_STATUS),
 
-  [LOGIN_INITIAL]: (state) => state.set('status', LOGIN_INITIAL_STATUS)
+  [LOGIN_INITIAL]: (state) => initialState
 
 }
 

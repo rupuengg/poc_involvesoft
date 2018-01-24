@@ -8,7 +8,7 @@ import ErrorIcon from 'material-ui/svg-icons/action/report-problem'
 import theme from '../../theme'
 import { getStyles } from '../style/style.js'
 import { browserHistory } from 'react-router'
-
+import { updateUserSettings } from '../../userSetting.js'
 import { getAuthenticationURL } from '../../utils/httpRequest'
 import { connect } from 'react-redux'
 import {
@@ -147,16 +147,11 @@ class Login extends Component {
   */
   componentDidUpdate (prevProps) {
     if (this.props.auth.status === LOGGED_IN_STATUS && (this.props.auth.status !== prevProps.auth.status)) {
+       this.props.updateUserSettings(this.props.auth.toJS())
       this.props.onSuccess &&  this.props.onSuccess()
     }
   }
-  /**
-    * React lifecycle method :
-    * setting props to initial state.
-  */
-  componentWillUnmount () {
-    this.props.clear()
-  }
+  
   /**
     * React lifecycle method :
     * Renders this component
@@ -195,12 +190,14 @@ class Login extends Component {
                 errorText={auth.status === WRONG_CREDS_STATUS ? this._getPasswordErrorText(styles) : null}
               />
               <br />< br /><br />
+              <div style={{textAlign:'center'}}>
               <RaisedButton backgroundColor={styles.raisedButton.backgroundColor}
                 label='Log In'
                 disabled={!this._checkSignInEnabled()}
                 onClick={this._login}
                 disabledBackgroundColor={styles.raisedButton.disabledBackgroundColor}
               />
+              </div>
             </div>
           </div>
         </Paper>
@@ -208,4 +205,4 @@ class Login extends Component {
   }
 }
 export default connect(mapStateToProps, {
-  ...authActions })(Login)
+  ...authActions, updateUserSettings })(Login)

@@ -54,7 +54,7 @@ const createcommunity = (name, visibility, user_id, baseUrl) => {
   console.log(form)
   return (dispatch) => {
     dispatch(creatingIn())
-    const url = 'http://10.0.30.179:8888/index.php/addCommunity'
+    const url = 'http://ec2-18-219-4-0.us-east-2.compute.amazonaws.com:8888/addCommunity'
     post(url,form,{},true)
     .then(response => (response.json()))
       .then(payload => {

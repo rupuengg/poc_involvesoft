@@ -2,7 +2,8 @@ export function getStyles (props, muiTheme) {
   return {
     navTabsStyle: {
       float: 'left',
-      width:'80%'
+      width:'100%',
+      magrin: 'auto'
     },
     navTabsHeaderStyle: {
       height:80,
@@ -12,10 +13,8 @@ export function getStyles (props, muiTheme) {
       align : 'center'
     },
     navTabsContentStyle: {
-      height:100,
+      height:'100%',
       width:'100%',
-      display: 'inline',
-      marginLeft: 400,
       textAlign : 'center',
       float: 'left',
       align : 'center'
