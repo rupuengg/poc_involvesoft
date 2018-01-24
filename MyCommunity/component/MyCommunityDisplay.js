@@ -61,7 +61,7 @@ data:''
 
 }
  uploadVolunteer = () =>{
- 	browserHistory.replace('/map-volunteer')
+ 	browserHistory.replace(`/map-volunteer/${this.props.id}`)
  }
 
 render() {
@@ -78,10 +78,10 @@ return (
 <GridTile
 key={tile.img}
 >
-<img src={tile.img} /> 
+<img src={tile.img} />
 </GridTile>
 
-))} 
+))}
 
 </GridList>
 </div>
